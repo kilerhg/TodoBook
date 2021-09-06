@@ -42,7 +42,7 @@ def head(resposta, qtd_resposta=5):
     limpo = resposta['items'][:qtd_resposta]
     return limpo
 
-def limpa_requisicao_livro(livro):
+def limpa_requisicao_livro(livro): # good
     dict_livro = {
         'titulo' : livro['title'],
         'autores' : '; '.join(livro['authors']),
