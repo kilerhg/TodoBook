@@ -15,10 +15,6 @@
     <link rel="stylesheet" href="{{url_for('static', filename='fonts/font-awesome.min.css')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='style/style.css')}}">
 
-    <style>
-        a { text-decoration: none; }
-    </style>
-
 </head>
 
 <body id="page-top" data-bs-spy="scroll" data-bs-target="#mainNav" data-bs-offset="77">
@@ -54,53 +50,31 @@
             <div class="col-sm-12">
                 <div class="title-box text-center">
                 <h3 class="title-a">
-                    Livros
+                    Biblioteca de Livros
                 </h3>
                 <p class="subtitle-a">
-                    Clique na capa do livro para ver mais
+                    Clique na capa do livro para ver mais, ou alternar status
                 </p>
                 <div class="line-mf"></div>
                 </div>
             </div>
-        </div>
+            </div>
             </br>
             </br>
-            <form action="{{ url_for('search') }}", method="POST">
-                <input type="text" name="book_name" placeholder="Nome Livro">
-                </br>
-                </br>
-                </br>                
-                <input type="submit" value="Buscar">
-            </form>
             </br>
             </br>
-            </br>   
-
+            </br>
             <div class="row">
-
-            {% for item in books%}
     
             <div class="col-md-2">
                 <div class="work-box">
-                <a href=" /biblioteca/{{ item['valor'] }}" target="_blank">
+                <a href="https://github.com/kilerhg/linkedin_webscraping" target="_blank">
                     <div class="work-img">
-                    <img src=" {{ item['imagem'] }} " alt="" class="img-fluid" style="width: 210px; height: 250px; margin: 0px;">
+                    <img src="https://raw.githubusercontent.com/kilerhg/TodoBook/main/imagens/livro_sem_capa.png" alt="" class="img-fluid" style="width: 210px; height: 250px; margin: 0px;">
                     </div>
-                    <div class="work-content">
-                        <div class="row">
-                          <div class="col-sm-12">
-                            <h2 class="w-title"> {{ item['titulo'] }} </h2>
-                            <div class="w-more">
-                              <span class="w-ctegory">{{ item['autores']}}</span> / <a href="{{ item['link'] }}" style="text-decoration: none"><span class="w-ctegory">Link</span></a>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
                 </a>
                 </div>
             </div>
-<!--  -->
-            {%endfor%}
 
 
             
