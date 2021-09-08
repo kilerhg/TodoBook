@@ -5,10 +5,14 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Home - Brand</title>
-    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <!-- <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css"> -->
+    <link rel="stylesheet" href=" {{url_for('static', filename='bootstrap/css/bootstrap.min.css')}} ">
+
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cabin:700">
-    <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
+
+    <!-- <link rel="stylesheet" href="assets/fonts/font-awesome.min.css"> -->
+    <link rel="stylesheet" href="{{url_for('static', filename='fonts/font-awesome.min.css')}}">
 </head>
 
 <body id="page-top" data-bs-spy="scroll" data-bs-target="#mainNav" data-bs-offset="77">
@@ -24,7 +28,7 @@
             </div>
         </div>
     </nav>
-    <header class="masthead" style="background: url(&quot;assets/img/pexels-wendy-van-zyl-1112048.jpg&quot;) left / cover, #000000;">
+    <header class="masthead" style="background: url(&quot;{{url_for('static', filename='img/pexels-wendy-van-zyl-1112048.jpg')}}&quot;) left / cover, #000000;">
         <div class="intro-body" style="width: 1208px;">
             <div class="container">
                 <div class="row">
@@ -46,7 +50,10 @@
             </div>
         </div>
     </section>
-    <section class="text-center download-section content-section" id="download" style="background-image:url('assets/img/downloads-bg.jpg');">
+    <!-- <section class="text-center download-section content-section" id="download" style="background-image:url('assets/img/back.jpg');"> -->
+    <section class="text-center download-section content-section" id="download" style="background-image:url({{url_for('static', filename='img/intro-bg.jpg')}});">
+    <!-- <script src="{{url_for('static', filename='bootstrap/js/bootstrap.min.js')}}"></script> -->
+            
         <div class="container">
             <div class="col-lg-8 mx-auto">
                 <h1>Register OR LOGIN FOR FREE</h1>
@@ -76,8 +83,13 @@
             <p>Copyright ©&nbsp;Brand 2021</p>
         </div>
     </footer>
-    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
-    <script src="assets/js/grayscale.js"></script>
+    
+    <!-- <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/grayscale.js"></script> -->
+
+    <script src="{{url_for('static', filename='bootstrap/js/bootstrap.min.js')}}"></script>
+    <script src="{{url_for('static', filename='js/grayscale.js')}}"></script>
+    
 </body>
 
 </html>

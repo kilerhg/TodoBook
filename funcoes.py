@@ -38,7 +38,7 @@ def consumir_api(url, busca):
     return resposta
 
 
-def head(resposta, qtd_resposta=5):
+def head(resposta, qtd_resposta=10):
     limpo = resposta['items'][:qtd_resposta]
     return limpo
 
@@ -83,12 +83,21 @@ def limpa_requisicao_livro(livro): # good
 
     return dict_livro
 
-# ' MAIN '
+def search_book(busca: str):
+    ' MAIN '
+    url = 'https://www.googleapis.com/books/v1/volumes?q='
 
-# url = 'https://www.googleapis.com/books/v1/volumes?q='
-# busca = 'mentes'
+    dados = consumir_api(url,busca)
+    dados_limpo = head(dados)
 
-# dados = ConsumirAPI(url,busca)
-# # a = [str(dados)[55:-1]]
-# print(Head(dados))
-# # 55
+    lista_livros = []
+    for livro_sujo in dados_limpo:
+        livro_limpo = livro_sujo['volumeInfo']
+        # print(livro_sujo['volumeInfo'])
+        try:
+            livro_tratado = limpa_requisicao_livro(livro=livro_limpo)
+        except:
+            livro_tratado = None
+        if livro_tratado:
+            lista_livros.append(livro_tratado)
+    return lista_livros

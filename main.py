@@ -1,19 +1,31 @@
-from flask import Flask, render_template, redirect, url_for
+from flask import Flask, render_template, redirect, url_for, request
+import requests
 
 import funcoes
 
-
-
 app = Flask(__name__)
-
 
 @app.route("/")
 def index():
-    return render_template('home_page.html')
+    return render_template('index.html')
 
-@app.route("/busca")
+@app.route("/busca", methods=["GET", "POST"])
 def search():
-    return render_template('search.html')
+    lista_livros = []
+    if request.method == "POST":
+        livro = request.form["book_name"]
+        lista_livros = funcoes.search_book(busca=livro)
+        print(lista_livros[0].keys())
+    return render_template('search.html', books=lista_livros)
+
+@app.route("/biblioteca")
+def library():
+    return render_template('library.html')
+
+@app.route("/biblioteca/<int:isbn>")
+def add_book_library(isbn):
+    print(isbn)
+    return render_template('library.html')
 
 @app.route("/cadastrar")
 def register():
