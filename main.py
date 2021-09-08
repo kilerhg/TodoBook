@@ -15,7 +15,6 @@ def search():
     if request.method == "POST":
         livro = request.form["book_name"]
         lista_livros = funcoes.search_book(busca=livro)
-        print(lista_livros[0].keys())
     return render_template('search.html', books=lista_livros)
 
 @app.route("/biblioteca")
