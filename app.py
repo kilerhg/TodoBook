@@ -21,7 +21,7 @@ def search():
 def library():
     return render_template('library.html')
 
-@app.route("/biblioteca/<int:isbn>")
+@app.route("/biblioteca/<int:unique>")
 def add_book_library(isbn):
     print(isbn)
     return render_template('library.html')
