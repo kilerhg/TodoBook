@@ -26,6 +26,7 @@ app.config['SECRET_KEY'] = os.getenv("APP_SECRET_KEY")
 app.config['SESSION_COOKIE_NAME'] = 'google-login-session'
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=5)
 
+
 oauth = OAuth(app)
 google = oauth.register(
     name='google',
@@ -45,17 +46,20 @@ google = oauth.register(
 def index():
     return render_template('index.html')
 
+
 @app.route('/login')
 def login():
     google = oauth.create_client('google')  # create the google oauth client
     redirect_uri = url_for('authorize', _external=True)
     return google.authorize_redirect(redirect_uri)
 
+
 @app.route('/logout')
 def logout():
     for key in list(session.keys()):
         session.pop(key)
     return redirect('/')
+
 
 @app.route('/authorize')
 def authorize():
@@ -70,6 +74,7 @@ def authorize():
     session['user'] = user
     # session.permanent = True  # make the session permanant so it keeps existing after broweser gets closed
     return redirect('/')
+
 
 @app.route("/busca", methods=["GET", "POST"])
 def search():
@@ -94,6 +99,7 @@ def library():
         list_books=list_books,
         )
 
+
 @app.route("/biblioteca/add/<book_id>")
 @login_required
 def add_book_library(book_id):
@@ -106,6 +112,7 @@ def add_book_library(book_id):
     if not book_exist:
         dao.insert_book_into_library_by_id(db=db, cursor=cursor, id_user=id_user, google_book_id=book_id)
     return redirect('/biblioteca')
+
 
 @app.route("/biblioteca/remove/<book_id>")
 @login_required
