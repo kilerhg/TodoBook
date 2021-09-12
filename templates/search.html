@@ -26,8 +26,8 @@
         <div class="container"><a class="navbar-brand" href="#">to do book</a><button data-bs-toggle="collapse" class="navbar-toggler navbar-toggler-right" data-bs-target="#navbarResponsive" type="button" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation" value="Menu"><i class="fa fa-bars"></i></button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item nav-link"><a class="nav-link active" href="#about">About</a></li>
-                    <li class="nav-item nav-link"><a class="nav-link" href="#contact">contact</a></li>
+                    <li class="nav-item nav-link"><a class="nav-link active" href=" {{ url_for('library') }} ">My Library</a></li>
+                    <li class="nav-item nav-link"><a class="nav-link active" href=" {{ url_for('index') }}">Home</a></li>
                     <li class="nav-item nav-link"><a class="nav-link" href=" {{ url_for('login') }} ">sign in/up</a></li>
                 </ul>
             </div>
