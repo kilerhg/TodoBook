@@ -31,7 +31,7 @@ Extras:
 link api : https://www.googleapis.com/books/v1/volumes?q={valor_procurado}
 '''
 
-def consumir_api(url, busca):
+def consumir_api(url, busca=''):
     url = str(url)
     busca = str(busca)
     resposta = requests.get(url+busca).json()
@@ -42,7 +42,7 @@ def head(resposta, qtd_resposta=10):
     limpo = resposta['items'][:qtd_resposta]
     return limpo
 
-def limpa_requisicao_livro(livro): # good
+def limpa_requisicao_livro(livro, book_id): # good
     dict_livro = {
         'titulo' : livro['title'],
         'autores' : '; '.join(livro['authors']),
@@ -51,6 +51,7 @@ def limpa_requisicao_livro(livro): # good
         'faixa_etaria' : livro['maturityRating'],
         'idioma' : livro['language'],
         'link' : livro['infoLink'],
+        'book_id' : book_id
     }
 
     ## Tratando iSBN
@@ -92,12 +93,22 @@ def search_book(busca: str):
 
     lista_livros = []
     for livro_sujo in dados_limpo:
+        book_id = livro_sujo['id']
         livro_limpo = livro_sujo['volumeInfo']
-        # print(livro_sujo['volumeInfo'])
         try:
-            livro_tratado = limpa_requisicao_livro(livro=livro_limpo)
+            livro_tratado = limpa_requisicao_livro(livro=livro_limpo, book_id=book_id)
         except:
             livro_tratado = None
         if livro_tratado:
             lista_livros.append(livro_tratado)
     return lista_livros
+
+def get_books_by_id(list_books_id : list):
+    base_url = 'https://www.googleapis.com/books/v1/volumes/'
+    list_book_library = []
+    for book in list_books_id:
+        link_book = base_url+book
+        dados = consumir_api(link_book)
+        dados_limpos = limpa_requisicao_livro(livro=dados['volumeInfo'], book_id=dados['id'])
+        list_book_library.append(dados_limpos)
+    return list_book_library

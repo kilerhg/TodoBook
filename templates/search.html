@@ -28,8 +28,7 @@
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item nav-link"><a class="nav-link active" href="#about">About</a></li>
                     <li class="nav-item nav-link"><a class="nav-link" href="#contact">contact</a></li>
-                    <li class="nav-item nav-link"><a class="nav-link active" href="/register.html">sing up</a></li>
-                    <li class="nav-item nav-link"><a class="nav-link" href="/login.html">sing in</a></li>
+                    <li class="nav-item nav-link"><a class="nav-link" href=" {{ url_for('login') }} ">sign in/up</a></li>
                 </ul>
             </div>
         </div>
@@ -82,7 +81,7 @@
     
             <div class="col-md-2">
                 <div class="work-box">
-                <a href=" /biblioteca/{{ item['valor'] }}" target="_blank">
+                <a href=" /biblioteca/add/{{ item['book_id'] }}" target="_blank">
                     <div class="work-img">
                     <img src=" {{ item['imagem'] }} " alt="" class="img-fluid" style="width: 210px; height: 250px; margin: 0px;">
                     </div>
@@ -99,7 +98,7 @@
                 </a>
                 </div>
             </div>
-<!--  -->
+
             {%endfor%}
 
 

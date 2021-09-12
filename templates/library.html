@@ -15,6 +15,10 @@
     <link rel="stylesheet" href="{{url_for('static', filename='fonts/font-awesome.min.css')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='style/style.css')}}">
 
+    <style>
+        a { text-decoration: none; }
+    </style>
+
 </head>
 
 <body id="page-top" data-bs-spy="scroll" data-bs-target="#mainNav" data-bs-offset="77">
@@ -24,8 +28,6 @@
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item nav-link"><a class="nav-link active" href="#about">About</a></li>
                     <li class="nav-item nav-link"><a class="nav-link" href="#contact">contact</a></li>
-                    <li class="nav-item nav-link"><a class="nav-link active" href="/register.html">sing up</a></li>
-                    <li class="nav-item nav-link"><a class="nav-link" href="/login.html">sing in</a></li>
                 </ul>
             </div>
         </div>
@@ -50,6 +52,9 @@
             <div class="col-sm-12">
                 <div class="title-box text-center">
                 <h3 class="title-a">
+                    Olá {{user_session['given_name']}}, Bem vindo á sua
+                </h3>
+                <h3 class="title-a">
                     Biblioteca de Livros
                 </h3>
                 <p class="subtitle-a">
@@ -66,15 +71,31 @@
             </br>
             <div class="row">
     
-            <div class="col-md-2">
-                <div class="work-box">
-                <a href="https://github.com/kilerhg/linkedin_webscraping" target="_blank">
-                    <div class="work-img">
-                    <img src="https://raw.githubusercontent.com/kilerhg/TodoBook/main/imagens/livro_sem_capa.png" alt="" class="img-fluid" style="width: 210px; height: 250px; margin: 0px;">
+                {% for item in list_books%}
+    
+                <div class="col-md-2">
+                    <div class="work-box">
+                    <a href=" /biblioteca/{{ item['book_id'] }}" target="_blank">
+                        <div class="work-img">
+                        <img src=" {{ item['imagem'] }} " alt="" class="img-fluid" style="width: 210px; height: 250px; margin: 0px;">
+                        </div>
+                        <div class="work-content">
+                            <div class="row">
+                              <div class="col-sm-12">
+                                <h2 class="w-title"> {{ item['titulo'] }} </h2>
+                                <div class="w-more">
+                                  <span class="w-ctegory">{{ item['autores']}}</span> / <a href="{{ item['link'] }}" style="text-decoration: none"><span class="w-ctegory">Link</span></a>
+                                  </br>
+                                  <a href="{{ item['link'] }}" style="text-decoration: none"><span class="w-ctegory">Editar</span></a> / <a href="/biblioteca/remove/{{ item['book_id'] }}" style="text-decoration: none"><span class="w-ctegory">Deletar</span></a>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                    </a>
                     </div>
-                </a>
                 </div>
-            </div>
+    
+                {%endfor%}
 
 
             
