@@ -102,3 +102,16 @@ def get_id_books_by_user_id(cursor, id_user):
     else:
         valores = []
     return valores
+
+def get_books_by_user_id(cursor, id_user):
+    cursor.execute(f'''
+        select book_unique_key, id_status_book, percent_book from library
+        where id_user = '{id_user}'
+    ;'''
+    )
+    valores = cursor.fetchall()
+    if valores:
+        valores = {book[0]:{'id_status_book':book[1], 'percent_book':book[2]} for book in valores}
+    else:
+        valores = {}
+    return valores

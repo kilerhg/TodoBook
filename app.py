@@ -82,7 +82,6 @@ def search():
     if request.method == "POST":
         livro = request.form["book_name"]
         lista_livros = funcoes.search_book(busca=livro)
-        print(lista_livros)
     return render_template('search.html', books=lista_livros)
 
 
@@ -92,11 +91,18 @@ def library():
     db, cursor = dao.connect_db()
     id_user = dict(session)['profile']['id']
     list_books_id = dao.get_id_books_by_user_id(cursor=cursor, id_user=id_user)
+    dict_other_infos_book = dao.get_books_by_user_id(cursor=cursor, id_user=id_user)
     list_books = funcoes.get_books_by_id(list_books_id=list_books_id)
+    new_list_books = []
+    for x in list_books:
+        x['id_status_book'] = dict_other_infos_book[x['book_id']]['id_status_book']
+        x['percent_book'] = dict_other_infos_book[x['book_id']]['percent_book']
+        new_list_books.append(x)
+    dict_books = {pos:book for pos, book in enumerate(new_list_books)}
     return render_template(
         'library.html',
         user_session=dict(session)['profile'],
-        list_books=list_books,
+        dict_books=dict_books,
         )
 
 
@@ -111,6 +117,43 @@ def add_book_library(book_id):
     
     if not book_exist:
         dao.insert_book_into_library_by_id(db=db, cursor=cursor, id_user=id_user, google_book_id=book_id)
+    return redirect('/biblioteca')
+
+@app.route("/biblioteca/update", methods=['POST'])
+@login_required
+def update_book_library():
+    db, cursor = dao.connect_db()
+
+    id_user = dict(session)['profile']['id']
+
+    status = request.form["status"]
+    book_id = request.form["book_id"]
+    percent = request.form['percent']
+
+    if percent == '':
+        percent = 0
+
+
+    if int(status) in [0, 1, 2]:
+        status = int(status)
+    else:
+        status = 0
+    
+    if int(percent) in list(range(101)) and int(status) not in [0, 2]:
+        percent = int(percent)
+    elif int(status) == 2:
+        percent = 100
+    else:
+        percent = 0
+
+
+
+
+    db, cursor = dao.connect_db()
+    id_register = dao.get_id_register(cursor=cursor, id_user=id_user, google_book_id=book_id)
+    dao.update_status_book_by_id(cursor, db, new_status_book=status, id_register=id_register)
+    dao.update_percent_book_by_id(cursor, db, new_percent=percent, id_register=id_register)
+
     return redirect('/biblioteca')
 
 

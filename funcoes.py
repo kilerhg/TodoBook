@@ -110,5 +110,6 @@ def get_books_by_id(list_books_id : list):
         link_book = base_url+book
         dados = consumir_api(link_book)
         dados_limpos = limpa_requisicao_livro(livro=dados['volumeInfo'], book_id=dados['id'])
+        # dados_limpos['']
         list_book_library.append(dados_limpos)
     return list_book_library
