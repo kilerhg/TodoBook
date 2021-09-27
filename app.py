@@ -6,6 +6,7 @@ import secrets
 
 import funcoes
 import dao
+import parameters
 
 import logging
 
@@ -91,10 +92,10 @@ def search():
 @app.route("/biblioteca")
 @login_required
 def library():
-    db, cursor = dao.connect_db()
+    db, cursor = dao.connection_database(user=parameters.USER, password=parameters.PWD, host=parameters.HOSTNAME, port=parameters.PORT, database=parameters.DATABASE)
     id_user = dict(session)['profile']['id']
-    list_books_id = dao.get_id_books_by_user_id(cursor=cursor, id_user=id_user)
-    dict_other_infos_book = dao.get_books_by_user_id(cursor=cursor, id_user=id_user)
+    list_books_id = dao.get_id_books_by_user_id(cursor=cursor, id_user=id_user, schema=parameters.SCHEMA)
+    dict_other_infos_book = dao.get_books_by_user_id(cursor=cursor, id_user=id_user, schema=parameters.SCHEMA)
     list_books = funcoes.get_books_by_id(list_books_id=list_books_id)
     new_list_books = []
     for x in list_books:
@@ -112,21 +113,19 @@ def library():
 @app.route("/biblioteca/add/<book_id>")
 @login_required
 def add_book_library(book_id):
-    db, cursor = dao.connect_db()
+    db, cursor = dao.connection_database(user=parameters.USER, password=parameters.PWD, host=parameters.HOSTNAME, port=parameters.PORT, database=parameters.DATABASE)
 
     id_user = dict(session)['profile']['id']
 
-    book_exist = dao.get_id_register(cursor=cursor, id_user=id_user, google_book_id=book_id)
+    book_exist = dao.get_id_register(cursor=cursor, id_user=id_user, google_book_id=book_id, schema=parameters.SCHEMA)
     
     if not book_exist:
-        dao.insert_book_into_library_by_id(db=db, cursor=cursor, id_user=id_user, google_book_id=book_id)
+        dao.insert_book_into_library_by_id(db=db, cursor=cursor, id_user=id_user, google_book_id=book_id), schema=parameters.SCHEMA
     return redirect('/biblioteca')
 
 @app.route("/biblioteca/update", methods=['POST'])
 @login_required
 def update_book_library():
-    db, cursor = dao.connect_db()
-
     id_user = dict(session)['profile']['id']
 
     status = request.form["status"]
@@ -151,11 +150,10 @@ def update_book_library():
 
 
 
-
-    db, cursor = dao.connect_db()
-    id_register = dao.get_id_register(cursor=cursor, id_user=id_user, google_book_id=book_id)
-    dao.update_status_book_by_id(cursor, db, new_status_book=status, id_register=id_register)
-    dao.update_percent_book_by_id(cursor, db, new_percent=percent, id_register=id_register)
+    db, cursor = dao.connection_database(user=parameters.USER, password=parameters.PWD, host=parameters.HOSTNAME, port=parameters.PORT, database=parameters.DATABASE)
+    id_register = dao.get_id_register(cursor=cursor, id_user=id_user, google_book_id=book_id, schema=parameters.SCHEMA)
+    dao.update_status_book_by_id(cursor, db, new_status_book=status, id_register=id_register, schema=parameters.SCHEMA)
+    dao.update_percent_book_by_id(cursor, db, new_percent=percent, id_register=id_register, schema=parameters.SCHEMA)
 
     return redirect('/biblioteca')
 
@@ -163,10 +161,10 @@ def update_book_library():
 @app.route("/biblioteca/remove/<book_id>")
 @login_required
 def remove_book_library(book_id):
-    db, cursor = dao.connect_db()
+    db, cursor = dao.connection_database(user=parameters.USER, password=parameters.PWD, host=parameters.HOSTNAME, port=parameters.PORT, database=parameters.DATABASE)
 
     id_user = dict(session)['profile']['id']
-    dao.remove_book_from_library_by_id(db=db, cursor=cursor, id_user=id_user, google_book_id=book_id)
+    dao.remove_book_from_library_by_id(db=db, cursor=cursor, id_user=id_user, google_book_id=book_id, schema=parameters.SCHEMA)
     return redirect('/biblioteca')
 
 
