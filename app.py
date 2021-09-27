@@ -24,7 +24,7 @@ app.config['SECRET_KEY'] = os.getenv("APP_SECRET_KEY")
 
 
 app.config['SESSION_COOKIE_NAME'] = 'google-login-session'
-app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=5)
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=40)
 
 
 oauth = OAuth(app)
