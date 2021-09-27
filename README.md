@@ -48,7 +48,7 @@ Extras:
 
 ## Screenshot
 
-![homepage]('./photos/home_page.png')
-![search]('./photos/search.png')
-![my_library]('./photos/my_library.png')
-![my_library_book_settings]('./photos/my_library_book_settings.png')
+![homepage](./photos/home_page.png)
+![search](./photos/search.png)
+![my_library](./photos/my_library.png)
+![my_library_book_settings](./photos/my_library_book_settings.png)
