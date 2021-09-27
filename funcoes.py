@@ -9,16 +9,16 @@ Funções á ser realizadas:
 - [X] funções Consumo APIs
 - [X] Funções separando primeiros Conteúdos
 - [X] Função Limpa Dados
-- [ ] Função olhar elementos individualmente
-- [ ] Estudos SQLite3
-- [ ] Desenhar Banco de dados Biblioteca
-- [ ] Criar Banco
-- [ ] Conectar & Testar Banco
-- [ ] Função Enviar Biblioteca
-- [ ] Função Excluir livro Blibioteca
-- [ ] Função Editar livro Biblioteca
-- [ ] Pesquisar Templates Html
-- [ ] Estudar Api Google & seus filtros
+- [X] Função olhar elementos individualmente
+- [X] Estudos SQLite3
+- [X] Desenhar Banco de dados Biblioteca
+- [X] Criar Banco
+- [X] Conectar & Testar Banco
+- [X] Função Enviar Biblioteca
+- [X] Função Excluir livro Blibioteca
+- [X] Função Editar livro Biblioteca
+- [X] Pesquisar Templates Html
+- [X] Estudar Api Google & seus filtros
 - [ ] Opções para organizar biblioteca internamente (Genero, nome, status)
 
 
@@ -43,6 +43,19 @@ def head(resposta, qtd_resposta=10):
     return limpo
 
 def limpa_requisicao_livro(livro, book_id): # good
+
+    # dict_livro = {}
+
+    # dict_livro['titulo']
+    # dict_livro['titulo']
+    # dict_livro['titulo']
+    # dict_livro['titulo']
+    # dict_livro['titulo']
+    # dict_livro['titulo']
+    # dict_livro['titulo']
+    # dict_livro['titulo']
+
+
     dict_livro = {
         'titulo' : livro['title'],
         'autores' : '; '.join(livro['authors']),
@@ -109,7 +122,10 @@ def get_books_by_id(list_books_id : list):
     for book in list_books_id:
         link_book = base_url+book
         dados = consumir_api(link_book)
-        dados_limpos = limpa_requisicao_livro(livro=dados['volumeInfo'], book_id=dados['id'])
-        # dados_limpos['']
-        list_book_library.append(dados_limpos)
+        try:
+            dados_limpos = limpa_requisicao_livro(livro=dados['volumeInfo'], book_id=dados['id'])
+        except:
+            pass
+        else:
+            list_book_library.append(dados_limpos)
     return list_book_library

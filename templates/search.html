@@ -28,7 +28,15 @@
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item nav-link"><a class="nav-link active" href=" {{ url_for('library') }} ">My Library</a></li>
                     <li class="nav-item nav-link"><a class="nav-link active" href=" {{ url_for('index') }}">Home</a></li>
+                    {% if is_logged %}
+
+                    <li class="nav-item nav-link"><a class="nav-link" href=" {{ url_for('logout') }} ">Logout</a></li>
+                    
+                    {% else %}
+
                     <li class="nav-item nav-link"><a class="nav-link" href=" {{ url_for('login') }} ">sign in/up</a></li>
+
+                    {% endif %}
                 </ul>
             </div>
         </div>
@@ -65,11 +73,11 @@
             </br>
             </br>
             <form action="{{ url_for('search') }}", method="POST">
-                <input type="text" name="book_name" placeholder="Nome Livro">
+                <input type="text" name="book_name" placeholder="Book Name">
                 </br>
                 </br>
                 </br>                
-                <input type="submit" value="Buscar">
+                <input type="submit" value="Search">
             </form>
             </br>
             </br>

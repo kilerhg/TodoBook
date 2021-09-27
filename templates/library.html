@@ -70,7 +70,7 @@
                     Library
                 </h3>
                 <p class="subtitle-a">
-                    Click on the book to change status
+                    Click in book to edit.
                 </p>
                 <div class="line-mf"></div>
                 </div>
@@ -100,7 +100,7 @@
                         {% elif item['id_status_book'] == 1 %}
                         <div id="texto">Reading</div>
                         {% elif item['id_status_book'] == 2 %}
-                        <div id="texto">Readed</div>
+                        <div id="texto">Read</div>
                         {% else %}
                         <div id="texto">Undefined</div>
                         {% endif %}
@@ -109,9 +109,9 @@
                               <div class="col-sm-12">
                                 <h2 class="w-title"> {{ item['titulo'] }} </h2>
                                 <div class="w-more">
-                                  <span class="w-ctegory">{{ item['autores']}}</span> / <a href="{{ item['link'] }}" style="text-decoration: none"><span class="w-ctegory">Link</span></a>
+                                  <span class="w-ctegory">{{ item['autores']}}</span> / <a href="{{ item['link'] }}" style="text-decoration: none"><span class="w-ctegory">Link google books</span></a>
                                   </br>
-                                  <a href="{{ item['link'] }}" style="text-decoration: none"><span class="w-ctegory">Editar</span></a> / <a href="/biblioteca/remove/{{ item['book_id'] }}" style="text-decoration: none"><span class="w-ctegory">Deletar</span></a>
+                                  <a href="/biblioteca/remove/{{ item['book_id'] }}" style="text-decoration: none"><span class="w-ctegory">Delete</span></a>
                                 </div>
                               </div>
                             </div>
@@ -147,11 +147,11 @@
                                             <option value="">Select</option>
                                             <option value="0">To Read</option>
                                             <option value="1">Reading</option>
-                                            <option value="2">Readed</option>
+                                            <option value="2">Read</option>
                                         </select> 
                                     </div>
                                     <div class="col-md-6" class="black"> 
-                                        <label for="percent" class="black"><a class="black"> Porcentagem</a></label>
+                                        <label for="percent" class="black"><a class="black"> Percent</a></label>
                                         <input type="number" id="percent" name="percent" min="0" max="100">
                                     </div>
                                 </div>

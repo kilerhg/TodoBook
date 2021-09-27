@@ -44,7 +44,9 @@ google = oauth.register(
 
 @app.route("/")
 def index():
-    return render_template('index.html')
+    is_logged = bool(dict(session))
+    print(is_logged)
+    return render_template('index.html', is_logged=is_logged)
 
 
 @app.route('/login')
@@ -78,11 +80,12 @@ def authorize():
 
 @app.route("/busca", methods=["GET", "POST"])
 def search():
+    is_logged = bool(dict(session))
     lista_livros = []
     if request.method == "POST":
         livro = request.form["book_name"]
         lista_livros = funcoes.search_book(busca=livro)
-    return render_template('search.html', books=lista_livros)
+    return render_template('search.html', books=lista_livros, is_logged=is_logged)
 
 
 @app.route("/biblioteca")
