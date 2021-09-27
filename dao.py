@@ -1,69 +1,47 @@
-import sqlite3
 import os
+import psycopg2
+import parameters
+import logging
 
-def connect_db(name='database'):
-
-    if os.path.isfile(f'./{name}.db'):
-        db = sqlite3.connect(f"{name}.db")
+def connection_database(user, password, host, port, database):
+    try:
+        db = psycopg2.connect(user=user,
+                                        password=password,
+                                        host=host,
+                                        port=port,
+                                        database=database)
         cursor = db.cursor()
-    else:
-        db = sqlite3.connect(f"{name}.db")
-        cursor = db.cursor()
+        logging.info('Successful connection')
+        return db, cursor
+    except:
+        logging.CRITICAL('Connection error')
 
-        sql_query_generate_status_book = '''
-            CREATE TABLE status_book (
-                id_status INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-                description TEXT(50)
-            );'''
-
-        sql_query_generate_library = '''
-            CREATE TABLE library (
-                id_register INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-                id_user INTEGER NOT NULL,
-                book_unique_key TEXT(40),
-                id_status_book INTEGER,
-                percent_book FLOAT(3),
-                FOREIGN KEY(id_status_book) REFERENCES status_book(id_status)
-            );'''
-
-        sql_query_insert_status_book = '''
-            insert into status_book(id_status, description) values 
-            ('0', 'Not Stated'), 
-            ('1', 'Reading'),
-            ('2', 'Readed');'''
-
-        cursor.execute(sql_query_generate_status_book)
-        cursor.execute(sql_query_generate_library)
-
-        cursor.execute(sql_query_insert_status_book)
-        db.commit()
-    
-    return db, cursor
-
-
-def insert_book_into_library_by_id(db, cursor, id_user, google_book_id):
+def insert_book_into_library_by_id(db, cursor, id_user, google_book_id, schema):
     sql_query_insert_book_into_library = f'''
-            insert into library(id_user, book_unique_key, id_status_book, percent_book) values 
+            insert into book_library(id_user, book_unique_key, id_status_book, percent_book) values 
             ('{id_user}', '{google_book_id}', '0', '0');'''
+    cursor.execute(f"set schema '{schema}'")
     cursor.execute(sql_query_insert_book_into_library)
     db.commit()
 
 
-def remove_book_from_library_by_id(db, cursor, id_user, google_book_id):
-    id_register = get_id_register(cursor=cursor, id_user=id_user, google_book_id=google_book_id)
+def remove_book_from_library_by_id(db, cursor, id_user, google_book_id, schema):
+    id_register = get_id_register(cursor=cursor, id_user=id_user, google_book_id=google_book_id, schema=schema)
     sql_query_remove_book_into_library = f'''
-    delete from library
+    delete from book_library
     where id_register='{id_register}'
     '''
+    cursor.execute(f"set schema '{schema}'")
     cursor.execute(sql_query_remove_book_into_library)
     db.commit()
 
 
-def get_id_register(cursor, id_user, google_book_id):
+def get_id_register(cursor, id_user, google_book_id, schema):
     sql_query_get_id_register = f'''
-            select id_register from library
+            select id_register from book_library
             where id_user = '{id_user}'
             and book_unique_key = '{google_book_id}';'''
+    cursor.execute(f"set schema '{schema}'")
     cursor.execute(sql_query_get_id_register)
     register_id = cursor.fetchone()
     if register_id:
@@ -73,26 +51,29 @@ def get_id_register(cursor, id_user, google_book_id):
     return register_id
 
 
-def update_status_book_by_id(cursor, db, new_status_book, id_register):
+def update_status_book_by_id(cursor, db, new_status_book, id_register, schema):
     sql_query_update_status_book = f'''
-            update library
+            update book_library
             set id_status_book = {new_status_book}
             where id_register={id_register}'''
+    cursor.execute(f"set schema '{schema}'")
     cursor.execute(sql_query_update_status_book)
     db.commit()
 
 
-def update_percent_book_by_id(cursor, db, new_percent, id_register):
+def update_percent_book_by_id(cursor, db, new_percent, id_register, schema):
     sql_query_update_percent_book = f'''
-            update library
+            update book_library
             set percent_book = {new_percent}
             where id_register = {id_register};'''
+    cursor.execute(f"set schema '{schema}'")
     cursor.execute(sql_query_update_percent_book)
     db.commit()
 
-def get_id_books_by_user_id(cursor, id_user):
+def get_id_books_by_user_id(cursor, id_user, schema):
+    cursor.execute(f"set schema '{schema}'")
     cursor.execute(f'''
-        select book_unique_key from library
+        select book_unique_key from book_library
         where id_user = '{id_user}'
     ;'''
     )
@@ -103,9 +84,10 @@ def get_id_books_by_user_id(cursor, id_user):
         valores = []
     return valores
 
-def get_books_by_user_id(cursor, id_user):
+def get_books_by_user_id(cursor, id_user, schema):
+    cursor.execute(f"set schema '{schema}'")
     cursor.execute(f'''
-        select book_unique_key, id_status_book, percent_book from library
+        select book_unique_key, id_status_book, percent_book from book_library
         where id_user = '{id_user}'
     ;'''
     )
