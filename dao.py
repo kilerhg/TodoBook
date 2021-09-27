@@ -1,23 +1,24 @@
 import os
 import psycopg2
 import parameters
+import logging
 
 def connection_database(user, password, host, port, database):
     try:
         db = psycopg2.connect(user=user,
-                                      password=password,
-                                      host=host,
-                                      port=port,
-                                      database=database)
+                                        password=password,
+                                        host=host,
+                                        port=port,
+                                        database=database)
         cursor = db.cursor()
-        print("Successful connection")
+        logging.info('Successful connection')
         return db, cursor
     except:
-        print("Connection error")
+        logging.CRITICAL('Connection error')
 
 def insert_book_into_library_by_id(db, cursor, id_user, google_book_id, schema):
     sql_query_insert_book_into_library = f'''
-            insert into library(id_user, book_unique_key, id_status_book, percent_book) values 
+            insert into book_library(id_user, book_unique_key, id_status_book, percent_book) values 
             ('{id_user}', '{google_book_id}', '0', '0');'''
     cursor.execute(f"set schema '{schema}'")
     cursor.execute(sql_query_insert_book_into_library)
@@ -25,9 +26,9 @@ def insert_book_into_library_by_id(db, cursor, id_user, google_book_id, schema):
 
 
 def remove_book_from_library_by_id(db, cursor, id_user, google_book_id, schema):
-    id_register = get_id_register(cursor=cursor, id_user=id_user, google_book_id=google_book_id)
+    id_register = get_id_register(cursor=cursor, id_user=id_user, google_book_id=google_book_id, schema=schema)
     sql_query_remove_book_into_library = f'''
-    delete from library
+    delete from book_library
     where id_register='{id_register}'
     '''
     cursor.execute(f"set schema '{schema}'")
@@ -37,7 +38,7 @@ def remove_book_from_library_by_id(db, cursor, id_user, google_book_id, schema):
 
 def get_id_register(cursor, id_user, google_book_id, schema):
     sql_query_get_id_register = f'''
-            select id_register from library
+            select id_register from book_library
             where id_user = '{id_user}'
             and book_unique_key = '{google_book_id}';'''
     cursor.execute(f"set schema '{schema}'")
@@ -52,7 +53,7 @@ def get_id_register(cursor, id_user, google_book_id, schema):
 
 def update_status_book_by_id(cursor, db, new_status_book, id_register, schema):
     sql_query_update_status_book = f'''
-            update library
+            update book_library
             set id_status_book = {new_status_book}
             where id_register={id_register}'''
     cursor.execute(f"set schema '{schema}'")
@@ -62,7 +63,7 @@ def update_status_book_by_id(cursor, db, new_status_book, id_register, schema):
 
 def update_percent_book_by_id(cursor, db, new_percent, id_register, schema):
     sql_query_update_percent_book = f'''
-            update library
+            update book_library
             set percent_book = {new_percent}
             where id_register = {id_register};'''
     cursor.execute(f"set schema '{schema}'")
@@ -72,7 +73,7 @@ def update_percent_book_by_id(cursor, db, new_percent, id_register, schema):
 def get_id_books_by_user_id(cursor, id_user, schema):
     cursor.execute(f"set schema '{schema}'")
     cursor.execute(f'''
-        select book_unique_key from library
+        select book_unique_key from book_library
         where id_user = '{id_user}'
     ;'''
     )
@@ -86,7 +87,7 @@ def get_id_books_by_user_id(cursor, id_user, schema):
 def get_books_by_user_id(cursor, id_user, schema):
     cursor.execute(f"set schema '{schema}'")
     cursor.execute(f'''
-        select book_unique_key, id_status_book, percent_book from library
+        select book_unique_key, id_status_book, percent_book from book_library
         where id_user = '{id_user}'
     ;'''
     )

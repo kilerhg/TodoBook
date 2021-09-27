@@ -46,7 +46,6 @@ google = oauth.register(
 @app.route("/")
 def index():
     is_logged = bool(dict(session))
-    print(is_logged)
     return render_template('index.html', is_logged=is_logged)
 
 
@@ -120,7 +119,7 @@ def add_book_library(book_id):
     book_exist = dao.get_id_register(cursor=cursor, id_user=id_user, google_book_id=book_id, schema=parameters.SCHEMA)
     
     if not book_exist:
-        dao.insert_book_into_library_by_id(db=db, cursor=cursor, id_user=id_user, google_book_id=book_id), schema=parameters.SCHEMA
+        dao.insert_book_into_library_by_id(db=db, cursor=cursor, id_user=id_user, google_book_id=book_id, schema=parameters.SCHEMA)
     return redirect('/biblioteca')
 
 @app.route("/biblioteca/update", methods=['POST'])
