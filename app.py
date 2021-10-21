@@ -1,4 +1,5 @@
 from flask import Flask, render_template, redirect, url_for, request, session
+from flask_talisman import Talisman
 from authlib.integrations.flask_client import OAuth
 from datetime import timedelta
 import os
@@ -19,6 +20,7 @@ load_dotenv()
 secret = secrets.token_urlsafe(32)
 
 app = Flask(__name__)
+Talisman(app, content_security_policy=None)
 # app.secrect_key = secret
 # app.secrect_key = os.getenv("APP_SECRET_KEY")
 app.config['SECRET_KEY'] = os.getenv("APP_SECRET_KEY")
