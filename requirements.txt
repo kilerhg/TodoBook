@@ -21,7 +21,7 @@ jupyter-core==4.7.1
 MarkupSafe==2.0.1
 matplotlib-inline==0.1.2
 nest-asyncio==1.5.1
-numpy==1.21.0
+numpy==1.22.0
 pandas==1.2.4
 parso==0.8.2
 pickleshare==0.7.5
